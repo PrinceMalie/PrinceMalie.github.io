@@ -188,7 +188,7 @@ After creating the partitions, we now must format them. The steps to format the 
 ```
 fdisk -l
 ```
-</center>
+<center>
 
 2. For the partition with the larger storage size, run the following command: 
 
@@ -234,6 +234,7 @@ mount --mkdir /dev/efi_system_partition /mnt/boot
 ## Package Installation
 
 Run this command and let the magic happen:
+
 <center>
 
 ```
