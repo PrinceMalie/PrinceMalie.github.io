@@ -71,12 +71,9 @@
 
 2. Once you are logged in the virtual console as the root user, run the following command to verify that the boot mode is UEFI:
 
-<center>
-
  ``` 
 ls /sys/firmware/efi/efivars
  ```
-</center>
 
 If the commmand shows the directory without error, then the system is booted in UEFI mode. If the directory does not exist, the system may be booted in BIOS mode. 
 
@@ -87,21 +84,15 @@ The default console keymap is US. However, you might have another keyboard layou
 
 1. Run the following command to see the list of available layouts:
 
-<center>
-
 ```
 ls /usr/share/kbd/keymaps/**/*.map.gz
 ```
-</center>
 
 2. After determining the keyboard layout you need, run the command below:
-
-<center>
 
 ``` 
 loadkeys de-latin1
 ```
-</center>
 
 Note: de-latin1 is the German keyboard layout. You can use de-latin1 as an example of what the command is for your desired keyboard layout.
 
@@ -111,33 +102,25 @@ The next step involves ensuring that the virtual environment has access to the i
 
 1. Run the command below to ensure your network interface is listed and enabled:
 
-<center>
-
 ```
 ip link 
 ```
-</center>
 
 2. Verify the connection by executing the following command: 
-
-<center>
 
 ```
 ping archlinux.org
 ```
-</center>
+
 If you receive a response, that means that it is working. 
 
 ## System Clock Update
 
 Use the command below to ensure the system clock is accurate:
 
-<center>
-
 ```
 timedatectl status
 ```
-</center>
 
 ## Disk Partition
 
@@ -145,24 +128,17 @@ To partition the disk, please follow the set of instructions listed below:
 
 1. Use the command to see a list of all the available block devices that the disk(s) are assigned to: 
 
-<center>
-
 ```
 fdisk -l 
 ```
-
-</center>
 
 You will see a disk that has 20 GB assigned to it as well as a disk that has around 687 MB. The 20 GB disk represents the virtual enviroment's hard drive; that is the disk you want to partition. The other disk is referencing the downloaded iso. 
 
 2. The command below must be used to partition the virtual environment's hard drive:
 
-<center>
-
 ```
 fdisk /dev/the_disk_to_be_partitioned
 ```
-</center>
 
 Remember, the disk you want to partition is the one that has 20 GB assigned to it. More than likely, it will be named /dev/sda. 
 
@@ -183,84 +159,61 @@ After creating the partitions, we now must format them. The steps to format the 
 
 1. Type the following command to see the list of partitions on your device (You should have two partitions.):
 
-<center>
-
 ```
 fdisk -l
 ```
-<center>
 
 2. For the partition with the larger storage size, run the following command: 
-
-<center>
 
 ```
 mkfs.ext4 /dev/root_partition
 ```
-</center>
 
 The root partition is the bigger partition. In my case, it was dev/sda2, but it could be dev/sda1. Again, it just depends on which one takes up more storage. 
 
 3. For the remaining partition, run the command listed below:
-<center>
 
 ```
 mkfs.fat -F 32 /dev/efi_system_partition
 ```
-</center>
 
 ## Mount the File Systems
 To mount the file systems, please do the following:
 
 1. Run this command to mount the root partition:
 
-<center>
-
 ```
 mount /dev/root_partition /mnt
 ```
-</center>
 
 
 2. Run this command to mount the EFI system partition:
 
-<center>
-
 ```
 mount --mkdir /dev/efi_system_partition /mnt/boot
 ```
-</center>
 
 ## Package Installation
 
 Run this command and let the magic happen:
 
-<center>
-
 ```
 pacstrap -K /mnt base linux linux-firmware
 ```
-</center>
 
 ## System Configuration
 
 1. Generate an fstab file using the command below: 
 
-<center>
-
 ```
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
-</center>
 
 2. Change root into the new system by executing the code below: 
-
-<center>
 
 ```
 arch-chroot /mnt
 ```
-</center>
 
 3. Install other essential packages. The base package does not includes all the packages and tools you need. Please install the following pacakges using the command listed below:
     * Packages to install:
@@ -274,63 +227,44 @@ arch-chroot /mnt
         8. lvm2
         9. ntfs-3g
 
-
-<center>
-
 ```
 pacman -S [name of package]
 ```
-</center>
 
 ## Time Zone
 
 1. Set the time zone using the command below: 
 
-<center>
-
 ```
 ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
 ```
-</center>
 
 Be sure to replace the region and city with the appropiate value representing where you currently reside. 
 
 2. Run hwclock to generate /etc/adjtime:
 
-<center>
-
 ```
 hwclock --systohc
 ```
-</center>
 
 ## Localization
 1. Edit /etc/locale.gen by running the command below and uncommenting en_US.UTF-8 UTF-8 in:
 
-<center>
-
 ```
 nano /etc/locale.gen
 ```
-</center>
 
 2. Create the locale.conf file, and set the LANG variable by taking the steps down below: 
-
-<center>
 
 ```
 echo LANG=en_US.UTF-8 > /etc/locale.conf
 ```
-</center>
 
 3. If you set the console keyboard layout, make the changes persistent in vconsole.conf:
-
-<center>
 
 ```
 echo KEYMAP=de-latin1 > /etc/vconsole.conf
 ```
-</center>
 
 Note: I did not run this command because I have the default US keyboard, but the command must be used if you have a different keyboard.
 
@@ -338,16 +272,12 @@ Note: I did not run this command because I have the default US keyboard, but the
 
 1. Create the hostname file and add myhostname as the hostname. 
 
-<center>
-
 ```
 echo "myhostname" > /etc/hostname
 ```
 
-</center>
-
 2. Edit /etc/hosts using nano by adding the following text:
-exi
+
 ```
 127.0.0.1 localhost
 ::1 localhost
@@ -360,61 +290,41 @@ If the system has a permanent IP address, it should be used instead of 127.0.1.1
 
 Run this line of code: 
 
-<center>
-
 ```
 mkinitcpio -P
 ```
 
-</center>
 
 ## Root Password
 
 Set the root password by executing this commannd:
 
-<center>
-
 ```
 passwd
 ```
 
-</center>
-
 ## Boot Loader
 
 1. Install the packages grub and efibootmgr
-
-<center>
 
 ```
 pacman -S grub
 pacman -S efibootmgr
 ```
 
-</center>
-
-
 2. Mount the EFI system parititon and in the remainder of this section, substititue esp with it mount point. 
-
-<center>
 
 ```
 mount --mkdir /dev/efi_system_partition /boot
 ```
-</center>
 
 3. Install Grub using the command below: 
-
-<center>
 
 ```
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 ```
-</center>
 
 4. After installing Grub, microcodes must be enabled. To acquire updated microcodes, depending on the processor, install one of the following packages:
-
-<center>
 
 ```
 pacman -S amd-ucode (for AMD processors)
@@ -424,16 +334,11 @@ OR
 pacman -S intel-ucode (for Intel processors)
 ```
 
-</center>
-
 After installing the software for updating microcodes, run the command below:
-
-<center>
 
 ```
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
-</center>
 
 5. Exit chroot and reboot the Arch Linux VM. When asked to login, type root for the login username and type the password you set earlier for the password entry. 
 
@@ -441,13 +346,9 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 1. Install LXDE by running the command below: 
 
-<center>
-
 ```
 pacman -S lxde
 ```
-</center>
-
 
 ## Create User Accounts with Sudo Permissions
 
@@ -455,61 +356,43 @@ pacman -S lxde
 
 2. Install sudo and vi editor by running the following commands:
 
-<center>
-
 ```
 pacman --sync sudo
 pacman --sync vi
 ```
-</center>
+
 
 3. Add a user also state to make its home directory by option --create-home
-
-<center>
 
 ```
 useradd --create-home [username]
 ```
-</center>
 
 4. Assign a password to the user:
-
-<center>
 
 ```
 passwd [username]
 ```
-</center>
 
 5. Wheel group is the sudo group in Arch Linux. So at this point add newly created user 'john' to the wheel group with the help of command usermod.
-
-<center>
 
 ```
 usermod -aG wheel [username]
 ```
 
-</center>
-
 6. Now edit the file sudoers so that the wheel group is activated. To do this, open the sudoer's file and uncomment the line  %wheel ALL=(ALL) ALL. This can be accomplished by running the code below: 
-
-<center>
 
 ```
 EDITOR=nano visudo
 ```
-</center>
 
 7. Verify that the user has sudo permissions by running the code below. The first line switches the user from root to the user you created. The second line will reutrn the user id, group id, and groups (make sure you see 998(wheel)). The third line should return root. If all of that happens, the user account has sudo permissions. 
-
-<center>
 
 ```
 su - [username]
 id
 sudo whoami
 ```
-</center>
 
 8. Create a user named "codi" with password GraceHopper1906. Repeat the process listed above. 
 
@@ -517,32 +400,23 @@ sudo whoami
 
 1. Install zsh shell by running the command below: 
 
-<center>
-
 ```
 pacman -S zsh
 ```
-</center>
 
 ## Install SSH and SHH into Class Gateway
 
 1. Install openssh with the command below:
 
-<center>
-
 ```
 pacman -S openssh
 ```
-</center>
 
 2. SSH into gateway using the following command:
-
-<center>
 
 ```
 ssh user@server-address
 ```
-</center>
 
 ## Install Color Coding 
 
@@ -550,87 +424,59 @@ I used [this](https://computingforgeeks.com/how-to-install-and-configure-zsh-she
 
 1. Change to zsh shell by executing the command below:
 
-<center>
-
 ```
 zsh
 ```
-</center>
 
 2. Change zsh to be your default shell by using the code below:
-
-<center>
 
 ```
 chsh -s /bin/zsh
 ```
-</center>
 
 3. Before installing Oh My ZSH, tthe prerequisites must be installed (wget, curl, git):
-
-<center>
 
 ```
 pacman -S wget
 pacman -S curl
 pacman -S git
 ```
-</center>
 
 4. Install zsh
-
-<center>
 
 ```
 sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 ```
 
-</center>
-
-
 5. Clone this repo
-
-<center>
 
 ```
 git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
 ```
-</center>
 
 6. Symlink spaceship.zsh-theme to your oh-my-zsh custom themes directory:
-
-<center>
 
 ```
 ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
 ```
-</center>
 
 7. Set ZSH_THEME = "spaceship" in your .zshrc. 
 
 8.  The symlink was created with an absolute path. Once your username folder is changed, the symlink is broken. Re-doing the symlink again is enough to fix it.
 
-<center>
-
 ```
 ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
 ```
-</center>
 
 9. Set the ZSH_THEME to be spaceship and rouce the .zhhrc after.
-
-<center>
 
 ```
 vi, ~/.zshrc
 ZSH_THEME = "spaceship"
 source ~/.zshrc
 ```
-</center>
 
 10. Configure help command by using nano to edit the .zshrc. Adding the following to .zshrc, and after source the file: 
-
-<center>
 
 ```
 autoload -U run-help
@@ -639,21 +485,15 @@ autoload run-help-svn
 autoload run-help-svk
 alias help=run-help
 ```
-</center>
 
 11. Clean code the plugins folder.
-
-<center>
 
 ```
 cd ~/.oh-my-zsh/plugins 
 git clone https://github.com/zsh-userszsh-syntax-highlighting.git 
 ```
-</center>
 
 12. Edit the .zshrc file by adding the information listed below to the end of the file. After, source the .zshrc file. 
-
-<center>
 
 ```
 vim ~/.zshrc
@@ -664,11 +504,7 @@ source ~/.zshrc
 
 ```
 
-</center>
-
 13. Edit the .zshrc file by adding the information listed below to the end of the file. After, source the .zshrc file. 
-
-<center>
 
 ```
 vim ~/.zshrc
@@ -678,62 +514,42 @@ zstyle ':completion:*' rehash true
 source ~/.zshrc
 
 ```
-</center>
 
 14. Clone zsh completions using code below:
-
-<center>
 
 ```
 git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 ```
 
-</center>
-
 15. Enable zsh completions by editing the .zshrc file by addding the following to the file:
-
-<center>
 
 ```
 vim ~/.zshrc
 plugins+=(zsh-completions)
 autoload -U compinit && compinit
 ```
-</center>
 
 16. Install zsh tab completion system using the code below:
-
-<center>
 
 ```
 pacman -S zsh-completions
 ```
 
-</center>
-
 ## Boot into GUI
 
 1. Install xorg-xinit:
-
-<center>
 
 ```
 pacman -S xorg-xinit
 ```
 
-</center>
-
 2. Run the following code
-
-<center>
 
 ```
 systemctl enable lxdm
 ```
-</center>
 
 3. Reboot and you will see the lxde gui.
-</center>
 
 ## Aliases
 
@@ -741,33 +557,21 @@ Click [this](https://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.h
 
 1. Show hidden files
 
-<center>
-
 ```
 alias l.='ls -d .* --color=auto'
 ```
 
-</center>
-
 2. Generate sha1 digest
-
-<center>
 
 ```
 alias shal='oppenssl shal'
 ```
 
-</center>
-
 3. Create parent directories on demand.
-
-<center>
 
 ```
 alias mkdir='mkdir -pv'
 ```
-
-</center>
 
 4. To make all the aliases permanent, add them to the .zshrc file, and reboot the system. 
 
