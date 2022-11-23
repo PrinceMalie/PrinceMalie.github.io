@@ -45,7 +45,9 @@ sudo docker run -d -p 443:443 --name openvas mikesplain/openvas
 3. Type the ip-address in your web browser, and you will be able to access OpenVas ("admin" is the default username and password for OpenVas).
 
 
+Here is the image of the final product (I could not get tasks to work, but OpenVas works!):
 
+![OpenVas Works](https://user-images.githubusercontent.com/73131545/203458566-8a2b532b-cee3-4c2f-b694-5cd88fa5dc91.png)
 
 
 
