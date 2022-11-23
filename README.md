@@ -575,4 +575,10 @@ alias mkdir='mkdir -pv'
 
 4. To make all the aliases permanent, add them to the .zshrc file, and reboot the system. 
 
+Here are images of the final product: 
+
+![Arch Linux 1](https://user-images.githubusercontent.com/73131545/203458029-1ce6aaed-ba59-4345-ac94-4acab4096d81.png)
+
+![Arch Linux 2](https://user-images.githubusercontent.com/73131545/203458183-e9252a5d-4cba-4a70-83d0-ff003455a1fb.png)
+
 
